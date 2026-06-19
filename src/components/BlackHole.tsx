@@ -1,4 +1,4 @@
-const BlackHole = () => {
+export default function BlackHole() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {/* Central black hole */}
@@ -75,6 +75,4 @@ const BlackHole = () => {
       </div>
     </div>
   );
-};
-
-export default BlackHole;
+}

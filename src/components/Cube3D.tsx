@@ -1,4 +1,4 @@
-const Cube3D = () => {
+export default function Cube3D() {
   return (
     <div className="perspective-1000 w-40 h-40 md:w-56 md:h-56">
       <div className="relative w-full h-full preserve-3d animate-rotate-cube">
@@ -35,6 +35,4 @@ const Cube3D = () => {
       </div>
     </div>
   );
-};
-
-export default Cube3D;
+}

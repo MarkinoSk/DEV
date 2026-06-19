@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 
-const Navbar = () => {
+export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -11,6 +11,24 @@ const Navbar = () => {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileMenuOpen]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const navLinks = [
@@ -26,7 +44,7 @@ const Navbar = () => {
         isScrolled ? "bg-background/90 backdrop-blur-md border-b border-border" : ""
       }`}
     >
-      <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
         <a href="#" className="font-mono text-lg font-bold">
           DEV<span className="text-muted-foreground">.</span>
         </a>
@@ -58,13 +76,13 @@ const Navbar = () => {
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-background border-b border-border">
-          <div className="container mx-auto px-6 py-6 flex flex-col gap-4">
+          <div className="container mx-auto px-4 sm:px-6 py-5 flex flex-col gap-3">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="font-mono text-lg py-2 border-b border-border hover:text-muted-foreground transition-colors"
+                className="font-mono text-base py-2 border-b border-border hover:text-muted-foreground transition-colors"
               >
                 {link.label}
               </a>
@@ -74,6 +92,4 @@ const Navbar = () => {
       )}
     </nav>
   );
-};
-
-export default Navbar;
+}

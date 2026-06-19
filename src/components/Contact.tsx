@@ -2,29 +2,68 @@ import { useState } from "react";
 import { Send } from "lucide-react";
 import { toast } from "sonner";
 
-const Contact = () => {
+export default function Contact() {
+  const web3FormsAccessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY;
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [lastSubmitTime, setLastSubmitTime] = useState(0);
+  const [consent, setConsent] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    // Rate limiting - max 1 správa za 60 sekúnd
+    const now = Date.now();
+    if (now - lastSubmitTime < 60000) {
+      toast.error("Počkaj prosím 60 sekúnd pred ďalšou správou.");
+      return;
+    }
+
+    if (!web3FormsAccessKey) {
+      toast.error("Kontaktný formulár nie je nakonfigurovaný.");
+      return;
+    }
+
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: web3FormsAccessKey,
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          from_name: "Portfolio Kontakt",
+        }),
+      });
 
-    toast.success("Správa bola odoslaná! Ozvem sa čo najskôr.");
-    setFormData({ name: "", email: "", message: "" });
-    setIsSubmitting(false);
+      const result = await response.json();
+      
+      if (result.success) {
+        toast.success("Správa bola odoslaná! Ozvem sa čo najskôr.");
+        setFormData({ name: "", email: "", message: "" });
+        setLastSubmitTime(now);
+      } else {
+        toast.error("Chyba pri odosielaní správy. Skúste prosím neskôr.");
+      }
+    } catch (error) {
+      toast.error("Chyba pri odosielaní správy. Skúste prosím neskôr.");
+      console.error("Form submission error:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -32,16 +71,16 @@ const Contact = () => {
   };
 
   return (
-    <section id="kontakt" className="py-24 md:py-32 px-6 bg-secondary/30">
+    <section id="kontakt" className="section-performance py-20 md:py-32 px-4 sm:px-6 bg-secondary/30">
       <div className="container mx-auto max-w-4xl">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 sm:mb-16">
           <p className="font-mono text-muted-foreground text-sm mb-4">
             [ 04 / KONTAKT ]
           </p>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-5 sm:mb-6">
             NAPÍŠ MI<span className="text-muted-foreground">_</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
             Máš projekt na mysli? Neváhaj ma kontaktovať.
           </p>
         </div>
@@ -96,9 +135,27 @@ const Contact = () => {
             />
           </div>
 
+          <div className="flex items-start gap-3">
+            <input
+              type="checkbox"
+              id="consent"
+              checked={consent}
+              onChange={(e) => setConsent(e.target.checked)}
+              required
+              className="mt-1 w-4 h-4 cursor-pointer"
+            />
+            <label htmlFor="consent" className="font-mono text-sm text-muted-foreground cursor-pointer">
+              Súhlasím so spracovaním mojich osobných údajov podľa{" "}
+              <a href="/privacy-policy" className="text-foreground hover:text-muted-foreground underline">
+                zásad ochrany osobných údajov
+              </a>
+              .
+            </label>
+          </div>
+
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !consent}
             className="w-full md:w-auto px-12 py-4 bg-foreground text-background font-mono text-sm hover:bg-muted-foreground transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 mx-auto"
           >
             {isSubmitting ? (
@@ -139,6 +196,4 @@ const Contact = () => {
       </div>
     </section>
   );
-};
-
-export default Contact;
+}

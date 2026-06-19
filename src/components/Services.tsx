@@ -1,24 +1,24 @@
 import { Check } from "lucide-react";
 
-const Services = () => {
+export default function Services() {
   return (
-    <section id="sluzby" className="py-24 md:py-32 px-6 bg-secondary/30">
+    <section id="sluzby" className="section-performance py-20 md:py-32 px-4 sm:px-6 bg-secondary/30">
       <div className="container mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12 sm:mb-16">
           <p className="font-mono text-muted-foreground text-sm mb-4">
             [ 02 / SLUŽBY ]
           </p>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-5 sm:mb-6">
             SLUŽBY<span className="text-muted-foreground">_</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto">
             Vytvorím ti modernú webovú stránku na mieru.
           </p>
         </div>
 
         <div className="max-w-md mx-auto">
           <div className="relative group">
-            <div className="h-full border border-foreground bg-card p-8 flex flex-col transition-all duration-300">
+            <div className="h-full border border-foreground bg-card p-6 sm:p-8 flex flex-col transition-all duration-300">
               <h3 className="font-mono text-xl mb-2">WEB</h3>
               <p className="text-muted-foreground text-sm mb-6">
                 Moderná webová stránka ideálna pre osobné portfólio alebo malé firmy.
@@ -29,7 +29,7 @@ const Services = () => {
                   399€
                 </span>
                 <span className="text-4xl md:text-5xl font-bold">
-                  119€
+                  250€
                 </span>
               </div>
 
@@ -76,6 +76,4 @@ const Services = () => {
       </div>
     </section>
   );
-};
-
-export default Services;
+}

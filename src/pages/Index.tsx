@@ -1,23 +1,33 @@
+import { Suspense, lazy } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import About from "@/components/About";
-import Services from "@/components/Services";
-import Projects from "@/components/Projects";
-import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 
-const Index = () => {
+const About = lazy(() => import("@/components/About"));
+const Services = lazy(() => import("@/components/Services"));
+const Projects = lazy(() => import("@/components/Projects"));
+const Contact = lazy(() => import("@/components/Contact"));
+
+export default function Index() {
   return (
-    <main className="min-h-screen bg-background">
-      <Navbar />
-      <Hero />
-      <About />
-      <Services />
-      <Projects />
-      <Contact />
-      <Footer />
-    </main>
+    <>
+      <Seo
+        title="Web Developer Portfolio | Student & Freelancer"
+        description="Profesionalna tvorba webov na mieru. Moderny dizajn, responzivnost a rychle nacitanie."
+        path="/"
+      />
+      <main className="min-h-screen bg-background">
+        <Navbar />
+        <Hero />
+        <Suspense fallback={<section className="h-24" aria-hidden="true" />}>
+          <About />
+          <Services />
+          <Projects />
+          <Contact />
+        </Suspense>
+        <Footer />
+      </main>
+    </>
   );
-};
-
-export default Index;
+}
