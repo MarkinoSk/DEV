@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Send } from "lucide-react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
 export default function Contact() {
@@ -146,9 +147,9 @@ export default function Contact() {
             />
             <label htmlFor="consent" className="font-mono text-sm text-muted-foreground cursor-pointer">
               Súhlasím so spracovaním mojich osobných údajov podľa{" "}
-              <a href="/privacy-policy" className="text-foreground hover:text-muted-foreground underline">
+              <Link to="/privacy-policy" className="text-foreground hover:text-muted-foreground underline">
                 zásad ochrany osobných údajov
-              </a>
+              </Link>
               .
             </label>
           </div>

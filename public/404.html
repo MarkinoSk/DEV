@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="sk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Presmerovanie...</title>
+    <script>
+      (function () {
+        var path = window.location.pathname.replace(/^\/DEV\/?/, "/");
+        var target = path + window.location.search + window.location.hash;
+        sessionStorage.setItem("gh-pages-redirect", target);
+        window.location.replace("/DEV/");
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>

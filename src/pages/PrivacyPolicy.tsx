@@ -1,4 +1,5 @@
 import Seo from "@/components/Seo";
+import { Link } from "react-router-dom";
 
 export default function PrivacyPolicy() {
   return (
@@ -108,12 +109,12 @@ export default function PrivacyPolicy() {
         </div>
 
           <div className="mt-16 pt-8 border-t border-border">
-            <a
-              href="/"
+            <Link
+              to="/"
               className="inline-block px-6 py-3 bg-foreground text-background font-mono text-sm hover:bg-muted-foreground transition-colors"
             >
               ← Späť na domovskú stránku
-            </a>
+            </Link>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function CookieBanner() {
   const [showBanner, setShowBanner] = useState(false);
@@ -35,9 +36,9 @@ export default function CookieBanner() {
               Táto stránka používa cookies na zlepšenie vašej skúsenosti. 
               Používame len základné cookies nevyhnutné pre funkčnosť webu. 
               Pre viac informácií, prečítajte si{" "}
-              <a href="/privacy-policy" className="underline hover:text-muted-foreground">
+              <Link to="/privacy-policy" className="underline hover:text-muted-foreground">
                 zásady ochrany osobných údajov
-              </a>
+              </Link>
               .
             </p>
           </div>
